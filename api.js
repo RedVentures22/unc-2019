@@ -53,5 +53,27 @@ app.post('/pets', (req, res) => {
   res.status(201).json(pet);
 });
 
+// add route to update pet
+app.put('/pets/:petId', (req, res) => {
+  let pet = pets.find(pet => pet.id === +req.params.petId);
+
+  if (!pet) {
+    console.error(`Pet ID ${req.params.petId} was not found`);
+    return res.status(404).send();
+  }
+
+  // create new pet object
+  const newPet = {
+    ...pet,
+    ...req.body,
+    id: pet.id
+  };
+
+  pets[pet.id - 1] = newPet;
+
+  console.info(`Pet ID ${req.params.petId} was updated`);
+  res.json(pet);
+});
+
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
