@@ -1,15 +1,18 @@
 const express = require('express')
 const app = express();
+const bodyParser = require('body-parser');
 const port = 3001;
+
+let id = 3;
 
 const pets = [
   {
-    name: 'spot',
-    type: 'dog',
-    breed: 'poodle',
-    color: 'black',
-    owner: 'chris tucker',
-    id: 1,
+    "name": 'spot',
+    "type": 'dog',
+    "breed": 'poodle',
+    "color": 'black',
+    "owner": 'chris tucker',
+    "id": 1,
   },
   {
     name: 'coco',
@@ -21,6 +24,7 @@ const pets = [
   }
 ];
 
+app.use(bodyParser.json())
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
@@ -37,6 +41,16 @@ app.get('/pets/:petId', (req, res) => {
   }
 
   res.json(pet);
+});
+
+app.post('/pets', (req, res) => {
+  const pet = {
+    ...req.body,
+    id: id++
+  };
+
+  pets.push(pet);
+  res.status(201).json(pet);
 });
 
 
